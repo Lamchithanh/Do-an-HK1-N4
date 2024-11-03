@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="dangnhap.css">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <title>Đăng Nhập | Đăng ký</title>
+</head>
+<body>
+    <div class="container" id="container">
+        
+        <div class="form-container sign-up">
+            <form>
+                <h1>ĐĂNG NHẬP</h1>
+                <input type="text" placeholder="Địa chỉ Email">
+                <input type="password" placeholder="Mật khẩu">
+                <input type="password" placeholder="Nhập lại mật khẩu">
+                <button>Đăng nhập</button>
+            </form>
+        </div>
+        <div class="form-container sign-in">
+            <form>
+                <h1>ĐĂNG KÝ</h1>
+                <input type="text" placeholder="Tên người dùng">
+                <input type="text" placeholder="Địa chỉ Email">
+                <input type="password" placeholder="Mật khẩu">
+                <input type="password" placeholder="Nhập lại mật khẩu">
+                <button>Đăng ký</button>
+            </form>
+        </div>
+        
+        <div class="toggle-container">
+            <div class="toggle">
+                <div class="toggle-panel toggle-left">
+                    <h1>Mừng trở lại!</h1>
+                    <p>Đăng nhập để tham gia các khóa học cùng chúng tôi</p>
+                    <button class="hidden" id="login">Đăng ký</button>
+
+                </div>
+                <div class="toggle-panel toggle-right">
+                    <h1>Welcome QT-Learning!</h1>
+                    <p>Nếu đã có tài khoản, hãy đăng nhập</p>
+                    <button class="hidden" id="register">Đăng nhập</button>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="dangnhap.js"></script>
+</body>
+</html>

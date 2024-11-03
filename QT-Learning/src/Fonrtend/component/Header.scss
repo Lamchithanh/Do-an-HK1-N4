@@ -1,0 +1,147 @@
+// Header container styling
+header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 100px 0;
+  justify-content: center;
+  text-align: center;
+  gap: 18px;
+  background-color: #fff;
+  opacity: 0.8;
+  background-image: radial-gradient(#2d6a4f 0.75px, transparent 0.75px),
+    radial-gradient(#3d6a4f 0.75px, #ffffff 0.75px);
+  background-size: 30px 30px;
+  background-position: 0 0.15px 15px;
+
+  // Info section styling
+  .info {
+    h1 {
+      font-weight: 900;
+      background: #fff;
+    }
+
+    p {
+      color: #666;
+      font-size: 18px;
+      margin-top: 16px;
+      font-weight: bold;
+      background: #fff;
+    }
+  }
+
+  // Buttons section styling
+  .buttons {
+    display: flex;
+    gap: 14px;
+    margin-top: 10px;
+
+    button {
+      border: none;
+      padding: 8px;
+      width: 140px;
+      border-radius: 10px;
+      background-color: #777;
+      color: #fff;
+      cursor: pointer;
+
+      &.see-all {
+        background-color: #2d6a4f;
+      }
+    }
+  }
+
+  // Search section styling
+  .search {
+    position: relative;
+    width: 30%;
+    margin-top: 15px;
+
+    input {
+      width: 100%;
+      padding: 18px 20px;
+      border: none;
+      border-radius: 18px;
+      box-shadow: 0px 4px 70px -10px rgba(0, 0, 0, 0.3);
+      outline: none;
+    }
+
+    button {
+      position: absolute;
+      right: 0;
+      padding: 12px;
+      font-size: 24px;
+      border: none;
+      background-color: transparent;
+      cursor: pointer;
+    }
+  }
+}
+
+// Courses section styling
+.courses {
+  .item {
+    width: 450px;
+
+    .top,
+    .bottom {
+      // display: flex;
+      justify-content: space-around;
+      gap: 10px;
+      background-color: #fff;
+      padding: 14px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border-radius: 18px;
+      border-bottom: 1px dashed #888;
+
+      img {
+        width: 150px;
+        min-height: 130px;
+        object-fit: cover;
+        border-radius: 8px;
+        filter: saturate(2.5); // Tăng độ bão hòa
+      }
+
+      .info {
+        text-align: left;
+
+        p {
+          font-size: 15px;
+          margin-right: 20px;
+          font-weight: normal;
+        }
+        h4 {
+          color: #db7c26;
+        }
+      }
+    }
+
+    .bottom {
+      .price {
+        p {
+          color: #888;
+          font-size: 13px;
+          text-decoration: line-through;
+        }
+      }
+
+      h5.tag {
+        background-color: #fff2b2;
+        color: #db7c26;
+        padding: 10px;
+        border-radius: 12px;
+        font-size: 13px;
+      }
+    }
+  }
+}
+
+// Search results section styling
+.search-results {
+  .search-result-item {
+    padding: 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    margin-top: 8px;
+  }
+}

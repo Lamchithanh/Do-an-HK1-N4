@@ -1,0 +1,43 @@
+nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 80px;
+  height: 80px;
+  background-color: #fff;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
+    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
+}
+
+nav .left {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+nav .left .logo img {
+  width: 108px;
+  height: 108px;
+  object-fit: cover;
+}
+
+nav .left .links {
+  font-weight: 700;
+  display: flex;
+  gap: 20px;
+  font-size: 15px;
+  font-weight: bold;
+}
+
+nav .buttons {
+  display: flex;
+  gap: 14px;
+}
+
+nav .buttons a {
+  background-color: #eaf4f4;
+  padding: 10px;
+  color: #2d6a4f;
+  border-radius: 50%;
+  font-size: 18px;
+}
