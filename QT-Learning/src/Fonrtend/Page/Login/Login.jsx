@@ -1,92 +1,199 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
-import { Form, Input, Button } from "antd"; // Import các thành phần từ antd
-import { login } from "../../../backend/Api/authAPI"; // Import hàm login từ api
-// import "./Login.scss"; // Đảm bảo bạn đã tạo file này để định kiểu
+import { login, register } from "../../../backend/Api/authAPI";
+import "./Login.scss";
+import { Button } from "antd";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+  const [role, setRole] = useState("student");
   const navigate = useNavigate();
 
-  // Hàm xử lý sự kiện khi người dùng gửi form
-  const handleSubmit = async (values) => {
-    const { email, password } = values; // Lấy giá trị từ form
+  const handleSubmitLogin = async (event) => {
+    event.preventDefault();
     try {
-      console.log("Sending login request..."); // Log trước khi gửi yêu cầu
       const response = await login(email, password);
-      console.log("Response received:", response); // Log phản hồi từ API
-
       toast.success("Đăng nhập thành công!");
 
       localStorage.setItem("user", JSON.stringify(response.user));
       localStorage.setItem("token", response.token);
 
+      // Chuyển hướng dựa trên role
       if (response.user.role === "admin") {
         navigate("/admin");
       } else if (response.user.role === "instructor") {
         navigate("/instructor");
       } else {
+        // Thay vì chỉ navigate, chúng ta sẽ reload trang
         navigate("/");
+        window.location.reload();
       }
     } catch (error) {
-      console.error("Login error:", error); // Log lỗi nếu xảy ra
       toast.error(
         error.response?.data?.error || "Đã xảy ra lỗi. Vui lòng thử lại."
       );
     }
   };
 
+  const handleSubmitRegister = async (event) => {
+    event.preventDefault();
+    let formattedEmail = email.trim();
+    if (!formattedEmail.includes("@")) {
+      formattedEmail += "@gmail.com";
+    } else if (!formattedEmail.endsWith("@gmail.com")) {
+      toast.error("Vui lòng sử dụng địa chỉ email hợp lệ với @gmail.com");
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      toast.error("Mật khẩu không khớp!");
+      return;
+    }
+
+    try {
+      await register({
+        username,
+        email: formattedEmail,
+        password,
+        role,
+      });
+      toast.success("Đăng ký thành công! Vui lòng đăng nhập.");
+      // Reset form và chuyển về form đăng nhập
+      const container = document.getElementById("container");
+      if (container) {
+        container.classList.remove("active");
+      }
+    } catch (error) {
+      toast.error(
+        error.response?.data?.error || "Đã xảy ra lỗi. Vui lòng thử lại."
+      );
+    }
+  };
+
+  useEffect(() => {
+    const container = document.getElementById("container");
+    const registerBtn = document.getElementById("register");
+    const loginBtn = document.getElementById("login");
+
+    const handleRegisterClick = () => {
+      container?.classList.add("active");
+    };
+
+    const handleLoginClick = () => {
+      container?.classList.remove("active");
+    };
+
+    if (registerBtn && loginBtn && container) {
+      registerBtn.addEventListener("click", handleRegisterClick);
+      loginBtn.addEventListener("click", handleLoginClick);
+    }
+
+    // Cleanup
+    return () => {
+      if (registerBtn && loginBtn) {
+        registerBtn.removeEventListener("click", handleRegisterClick);
+        loginBtn.removeEventListener("click", handleLoginClick);
+      }
+    };
+  }, []);
+
   return (
-    <div className="container">
-      <Button
-        className="btn-back"
-        onClick={() => navigate(-1)}
-        style={{ marginBottom: 16 }}
-      >
-        Quay lại
-      </Button>
-
-      <Form className="form-signin" onFinish={handleSubmit}>
-        <h2 className="title-signin">Đăng nhập vào tài khoản của bạn</h2>
-
-        <Form.Item
-          name="email"
-          rules={[
-            { required: true, message: "Vui lòng nhập email!" },
-            { type: "email", message: "Email không hợp lệ!" },
-          ]}
-        >
-          <Input
-            placeholder="Nhập email"
+    <div className="form-user container" id="container">
+      <div className="form-container sign-in">
+        <form onSubmit={handleSubmitLogin}>
+          {" "}
+          <h1>ĐĂNG NHẬP</h1>
+          <input
+            type="text"
+            placeholder="Địa chỉ Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-        </Form.Item>
-
-        <Form.Item
-          name="password"
-          rules={[{ required: true, message: "Vui lòng nhập mật khẩu!" }]}
-        >
-          <Input.Password
-            placeholder="Nhập mật khẩu"
+          <input
+            type="password"
+            placeholder="Mật khẩu"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-        </Form.Item>
+          <button type="submit">Đăng nhập</button>
+          <button onClick={() => navigate(-1)} type="submit">
+            {" "}
+            Quay lại
+          </button>
+        </form>
+      </div>
 
-        <Form.Item>
-          <Button className="btn-signin" type="primary" htmlType="submit">
-            Đăng nhập
+      <div className="form-container sign-up">
+        <form onSubmit={handleSubmitRegister}>
+          <h1>ĐĂNG KÝ</h1>
+          <input
+            type="text"
+            placeholder="Tên người dùng"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="Địa chỉ Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Mật khẩu"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <input
+            type="password"
+            placeholder="Nhập lại mật khẩu"
+            value={confirmPassword}
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+          <select
+            className="role-select"
+            value={role}
+            onChange={(e) => setRole(e.target.value)}
+          >
+            <option value="student">1. Học viên</option>
+            <option value="instructor" disabled style={{ color: "#ccc" }}>
+              2. Giảng viên
+            </option>
+          </select>
+
+          <button type="submit">Đăng ký</button>
+          <Button
+            className="btn-back"
+            onClick={() => navigate(-1)}
+            style={{ marginBottom: 16 }}
+          >
+            Quay lại
           </Button>
-        </Form.Item>
+        </form>
+      </div>
 
-        <p>
-          <Link to="/register">Tạo tài khoản mới</Link> |{" "}
-          <Link to="/forgot-password">Quên mật khẩu?</Link>
-        </p>
-      </Form>
+      <div className="toggle-container">
+        <div className="toggle">
+          <div className="toggle-panel toggle-left">
+            <h1>Mừng trở lại!</h1>
+            <p>Đăng nhập để tham gia các khóa học cùng chúng tôi</p>
+            <button className="hidden" id="login">
+              Đăng Nhập
+            </button>
+          </div>
+          <div className="toggle-panel toggle-right">
+            <h1>Welcome QT-Learning!</h1>
+            <p>Nếu đã có tài khoản, hãy đăng nhập</p>
+            <button className="hidden" id="register">
+              Đăng Ký
+            </button>
+          </div>
+        </div>
+      </div>
       <ToastContainer />
     </div>
   );

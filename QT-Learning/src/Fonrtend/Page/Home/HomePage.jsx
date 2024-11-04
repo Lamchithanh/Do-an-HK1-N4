@@ -1,32 +1,64 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { fetchCoursesAPI } from "../../../backend/Api/courseApi";
+import { useLoading } from "../../context/LoadingContext";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import "./Content.scss";
 
 const Content = () => {
   const [courses, setCourses] = useState([]);
-  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isAnimating, setIsAnimating] = useState(false);
   const navigate = useNavigate();
+  const { showLoading, hideLoading } = useLoading();
+  const itemsToShow = 4;
 
   useEffect(() => {
     const loadCourses = async () => {
+      showLoading();
       try {
         const data = await fetchCoursesAPI();
         setCourses(data);
-        setLoading(false);
       } catch (err) {
         setError("Không thể tải khóa học");
-        setLoading(false);
+      } finally {
+        hideLoading();
       }
     };
 
     loadCourses();
   }, []);
 
-  if (loading) {
-    return <div className="content loading">Đang tải...</div>;
-  }
+  const handleCourseClick = (courseId) => {
+    navigate(`/courses/${courseId}`);
+  };
+
+  const next = () => {
+    if (isAnimating || !courses.length) return;
+    setIsAnimating(true);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % courses.length);
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  const prev = () => {
+    if (isAnimating || !courses.length) return;
+    setIsAnimating(true);
+    setCurrentIndex((prevIndex) =>
+      prevIndex === 0 ? courses.length - 1 : prevIndex - 1
+    );
+    setTimeout(() => setIsAnimating(false), 500);
+  };
+
+  const getVisibleCourses = () => {
+    if (!courses.length) return [];
+    let items = [];
+    for (let i = 0; i < itemsToShow; i++) {
+      const index = (currentIndex + i) % courses.length;
+      items.push(courses[index]);
+    }
+    return items;
+  };
 
   if (error) {
     return <div className="content error">{error}</div>;
@@ -41,37 +73,64 @@ const Content = () => {
         </Link>
       </div>
 
-      <div className="courses">
-        {courses.map((course) => (
-          <div
-            key={course.id}
-            className="item"
-            onClick={() => navigate(`/courses/${course.id}`)}
-          >
-            <div className="top">
-              <img
-                src={course.image || "./Image/Nhap Mon.jpg"}
-                alt={course.title}
-              />
-              <div className="info">
-                <span>{course.title}</span>
-                <p>Tác giả: {course.instructor_name || "ABC"}</p>
-                <p>Thời gian học: {course.duration || "121h10p"}</p>
+      <div className="courses-slideshow relative">
+        <div className="overflow-hidden">
+          <div className="courses-container flex transition-transform duration-500 ease-in-out gap-4">
+            {getVisibleCourses().map((course, idx) => (
+              <div
+                key={`${course.id}-${idx}`}
+                className="course-item flex-none w-1/4"
+                onClick={() => handleCourseClick(course.id)}
+              >
+                <div className="item">
+                  <div className="top">
+                    <img
+                      src={course.image || "./Image/Nhap Mon.jpg"}
+                      alt={course.title}
+                    />
+                    <div className="info">
+                      <span
+                        style={{
+                          fontWeight: "bold",
+                          marginTop: "15px",
+                          color: "#e25316",
+                        }}
+                      >
+                        {course.title}
+                      </span>
+                      <p>QT Learning</p>
+                      <p>Thời gian học: {course.duration || "121h10p"}</p>
+                    </div>
+                  </div>
+                  <div className="bottom">
+                    <div className="price">
+                      <h5>
+                        {course.price === "0" || course.price === "0.00"
+                          ? "Miễn phí"
+                          : `${course.price} VND`}
+                      </h5>
+                    </div>
+                    <h5 className="tag">
+                      <span>{course.level}</span>
+                    </h5>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="bottom">
-              <div class="price">
-                <h5>Miễn Phí</h5>
-              </div>
-              <h5 class="tag">
-                <span>+1000 </span>Học Viên
-              </h5>
-            </div>
+            ))}
           </div>
-        ))}
+        </div>
+
+        {/* Button navigation */}
+        <button onClick={prev} className="nav-button left">
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+
+        <button onClick={next} className="nav-button right">
+          <ChevronRight className="w-6 h-6" />
+        </button>
       </div>
 
-      <div className="separator">
+      <div className="separator review">
         <h2>Đánh Giá Của Học Viên</h2>
       </div>
       <div className="comments">

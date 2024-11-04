@@ -26,3 +26,17 @@ export const fetchCertificates = async (userId) => {
   });
   return response.data;
 };
+
+export const updateUserAvatar = async (file) => {
+  const formData = new FormData();
+  formData.append("avatar", file);
+
+  const response = await axios.post(`${API_URL}/upload-avatar`, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      ...getAuthHeader(), // Nếu bạn cần xác thực
+    },
+  });
+
+  return response.data.avatarUrl; // Giả sử server trả về URL của ảnh
+};

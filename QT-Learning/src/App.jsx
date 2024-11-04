@@ -17,6 +17,7 @@ import AccountSettings from "./Fonrtend/Page/AccountSettings/AccountSettings";
 import CourseDetail from "./Fonrtend/Page/CourseDetail/CourseDetail";
 import UserInfo from "./Fonrtend/Page/UserInfo/UserInfo";
 import Content from "./Fonrtend/Page/Home/HomePage";
+import { LoadingProvider } from "./Fonrtend/context/LoadingContext";
 
 const ProtectedRoute = ({ children, allowedRoles }) => {
   const user = JSON.parse(localStorage.getItem("user"));
@@ -34,33 +35,35 @@ ProtectedRoute.propTypes = {
 };
 
 const App = () => (
-  <Router>
-    <div className="App">
-      <ToastContainer />
-      <Routes>
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route path="/forgot-password" element={<ForgotPassword />} />
+  <LoadingProvider>
+    <Router>
+      <div className="App">
+        <ToastContainer />
+        <Routes>
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
 
-        <Route path="/" element={<User />}>
-          <Route index element={<Content />} />
-          <Route path="user-info" element={<UserInfo />} />
-          <Route path="my-courses" element={<MyCourses />} />
-          <Route path="account-settings" element={<AccountSettings />} />
-          <Route path="courses/:id" element={<CourseDetail />} />{" "}
-        </Route>
+          <Route path="/" element={<User />}>
+            <Route index element={<Content />} />
+            <Route path="user-info" element={<UserInfo />} />
+            <Route path="my-courses" element={<MyCourses />} />
+            <Route path="account-settings" element={<AccountSettings />} />
+            <Route path="courses/:id" element={<CourseDetail />} />{" "}
+          </Route>
 
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute allowedRoles={["admin"]}>
-              <AdminDashboard />
-            </ProtectedRoute>
-          }
-        />
-      </Routes>
-    </div>
-  </Router>
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute allowedRoles={["admin"]}>
+                <AdminDashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
+      </div>
+    </Router>
+  </LoadingProvider>
 );
 
 export default App;

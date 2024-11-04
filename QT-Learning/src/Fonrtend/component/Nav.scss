@@ -5,39 +5,135 @@ nav {
   padding: 0 80px;
   height: 80px;
   background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 20px 25px -5px,
-    rgba(0, 0, 0, 0.04) 0px 10px 10px -5px;
-}
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 10px 20px -5px,
+    rgba(0, 0, 0, 0.04) 0px 10px 5px -5px;
 
-nav .left {
-  display: flex;
-  align-items: center;
-  gap: 20px;
-}
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 20px;
 
-nav .left .logo img {
-  width: 108px;
-  height: 108px;
-  object-fit: cover;
-}
+    .logo img {
+      width: 108px;
+      height: 108px;
+      object-fit: cover;
+    }
 
-nav .left .links {
-  font-weight: 700;
-  display: flex;
-  gap: 20px;
-  font-size: 15px;
-  font-weight: bold;
-}
+    .links {
+      font-weight: 700;
+      display: flex;
+      gap: 20px;
+      font-size: 15px;
+      font-weight: bold;
+      color: #2d6a4f;
+    }
+  }
 
-nav .buttons {
-  display: flex;
-  gap: 14px;
-}
+  .buttons {
+    display: flex;
+    gap: 14px;
+    position: relative; // Đặt vị trí để dropdown có thể sử dụng
 
-nav .buttons a {
-  background-color: #eaf4f4;
-  padding: 10px;
-  color: #2d6a4f;
-  border-radius: 50%;
-  font-size: 18px;
+    button {
+      background: #b8eed6;
+      border: none;
+
+      &:hover {
+        background: #6da58c;
+        color: #dbe3ec; /* Màu khi di chuột vào, tuỳ chỉnh theo ý muốn */
+      }
+    }
+    .user-info {
+      display: flex;
+      align-items: center;
+    }
+
+    a {
+      background-color: #eaf4f4;
+      padding: 10px;
+      color: #2d6a4f;
+      // border-radius: 50%;
+      font-size: 18px;
+    }
+
+    .user-menu {
+      position: relative;
+      display: inline-block;
+
+      .button-user {
+        display: flex;
+        align-items: center;
+        padding: 8px 12px;
+        border-radius: 8px;
+        border: none;
+        // background: transparent;
+        cursor: pointer;
+        transition: background-color 0.2s;
+
+        .user-info {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+
+          .avatar-img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+          }
+
+          .username {
+            font-size: 14px;
+            font-weight: 500;
+          }
+        }
+
+        i.bx {
+          font-size: 24px;
+        }
+      }
+
+      .dropdown {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        margin-top: 8px;
+        min-width: 200px;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+
+        .dropdown-content {
+          padding: 4px 0;
+
+          .dropdown-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 16px;
+            color: #333;
+            text-decoration: none;
+            transition: background-color 0.2s;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.05);
+            }
+
+            i {
+              margin-right: 8px;
+              font-size: 18px;
+            }
+
+            &.logout {
+              color: #dc2626;
+            }
+
+            span {
+              font-size: 14px;
+            }
+          }
+        }
+      }
+    }
+  }
 }

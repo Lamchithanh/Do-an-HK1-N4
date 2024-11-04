@@ -1,9 +1,14 @@
-// Header container styling
+$content-background: #f8f8f8;
+$main-color: #2d6a4f;
+$secondary-color: #888;
+$tag-background: #fff2b2;
+$tag-color: #db7c26;
+
 header {
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 100px 0;
+  padding: 155px 0;
   justify-content: center;
   text-align: center;
   gap: 18px;
@@ -79,59 +84,77 @@ header {
 }
 
 // Courses section styling
-.courses {
-  .item {
-    width: 450px;
+.overflow-hidden {
+  display: grid;
+  justify-content: space-evenly;
+  .courses-container {
+    display: flex;
+    justify-content: space-between;
+    transition: transform 0.3s ease;
+    gap: 4;
+  }
+}
 
-    .top,
-    .bottom {
-      // display: flex;
-      justify-content: space-around;
-      gap: 10px;
-      background-color: #fff;
-      padding: 14px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
-      border-radius: 18px;
-      border-bottom: 1px dashed #888;
+.course-item {
+  // flex: none;
+  width: 350px;
+  display: flex;
+  justify-content: center;
+
+  .item {
+    width: 380px;
+    margin-bottom: 15px;
+    .top {
+      display: grid;
+      justify-content: left;
 
       img {
-        width: 150px;
-        min-height: 130px;
-        object-fit: cover;
-        border-radius: 8px;
-        filter: saturate(2.5); // Tăng độ bão hòa
+        filter: saturate(200%);
       }
-
       .info {
         text-align: left;
 
         p {
-          font-size: 15px;
-          margin-right: 20px;
-          font-weight: normal;
-        }
-        h4 {
-          color: #db7c26;
+          font-size: 13px;
         }
       }
     }
+    .top,
+    .bottom {
+      gap: 10px;
+      background-color: #fff;
+      padding: 14px;
+      box-shadow: 0 10px 20px rgba(126, 157, 127, 0.5);
+      border-radius: 18px;
+      border-bottom: 1px dashed $secondary-color;
+    }
 
     .bottom {
-      .price {
-        p {
-          color: #888;
-          font-size: 13px;
-          text-decoration: line-through;
-        }
-      }
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 50px;
+    }
 
-      h5.tag {
-        background-color: #fff2b2;
-        color: #db7c26;
-        padding: 10px;
-        border-radius: 12px;
-        font-size: 13px;
-      }
+    .top img {
+      width: 120px;
+      min-height: 120px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .bottom .price p {
+      color: $secondary-color;
+      font-size: 13px;
+      text-decoration: line-through;
+    }
+
+    .bottom h5.tag {
+      background-color: $tag-background;
+      color: $tag-color;
+      padding: 10px;
+      border-radius: 12px;
+      font-size: 13px;
     }
   }
 }

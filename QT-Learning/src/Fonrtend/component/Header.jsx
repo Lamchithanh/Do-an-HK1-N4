@@ -88,30 +88,43 @@ const Header = () => {
       {loading && <div className="loading">Đang tìm kiếm...</div>}
       {results.length > 0 && (
         <div className="search-results">
-          {results.map((course) => (
+          {results.map((course, idx) => (
             <div
-              key={course.id}
-              className="search-result-item"
-              onClick={() => handleResultClick(course.id)}
+              key={`${course.id}-${idx}`}
+              className="course-item flex-none w-1/4"
+              onClick={() => handleCourseClick(course.id)}
             >
-              {/* hiển thị khóa học */}
-              <div className="courses">
-                <div
-                  key={course.id}
-                  className="item"
-                  onClick={() => navigate(`/courses/${course.id}`)}
-                >
-                  <div className="top">
-                    <img
-                      src={course.image || "./Image/Nhap Mon.jpg"}
-                      alt={course.title}
-                    />
-                    <div className="info">
-                      <h4>{course.title}</h4>
-                      <p>Tác giả: {course.instructor_name || "ABC"}</p>
-                      <p>Thời gian học: {course.duration || "121h10p"}</p>
-                    </div>
+              <div className="item">
+                <div className="top">
+                  <img
+                    src={course.image || "./Image/Nhap Mon.jpg"}
+                    alt={course.title}
+                  />
+                  <div className="info">
+                    <span
+                      style={{
+                        fontWeight: "bold",
+                        marginTop: "15px",
+                        color: "#e25316",
+                      }}
+                    >
+                      {course.title}
+                    </span>
+                    <p>QT Learning</p>
+                    <p>Thời gian học: {course.duration || "121h10p"}</p>
                   </div>
+                </div>
+                <div className="bottom">
+                  <div className="price">
+                    <h5>
+                      {course.price === "0" || course.price === "0.00"
+                        ? "Miễn phí"
+                        : `${course.price} VND`}
+                    </h5>
+                  </div>
+                  <h5 className="tag">
+                    <span>{course.level}</span>
+                  </h5>
                 </div>
               </div>
             </div>
